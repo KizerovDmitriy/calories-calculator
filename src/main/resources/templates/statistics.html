@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Калории по продуктам</title>
+  <style>
+    h1 {
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid black;
+    }
+    th {
+      background-color: lightgray;
+    }
+    tbody tr:nth-child(even) {
+      background-color: lightgray;
+    }
+    p {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>Калории по продуктам для пользователя: <span th:text="${user.email}"></span></h1><br>
+<h2>В период с <span th:text="${caloriesSummaryStatistic.getStartDate()}"></span> по <span th:text="${caloriesSummaryStatistic.getEndDate()}"></span></h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>Название продукта</th>
+    <th>Количество, г</th>
+    <th>Калории</th>
+    <th>Дата</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="meal : ${caloriesSummaryStatistic.getMeals()}">
+    <td th:text="${meal.food.productName}"></td>
+    <td th:text="${meal.weight}"></td>
+    <td th:text="${meal.weight * meal.food.caloriesPer100Gram / 100}"></td>
+    <td th:text="${meal.getDate()}"></td>
+  </tr>
+  </tbody>
+  <tfoot>
+  <tr>
+    <td colspan="2">Сумма калорий:</td>
+    <td><span th:text="${caloriesSummaryStatistic.getTotalCalories()}"></span></td>
+    <td></td>
+  </tr>
+  </tfoot>
+</table>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"], input[type="number"], select {
+            font-size: 16px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            width: 250px;
+        }
+
+        input[type="submit"], button {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background-color: #0069d9;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        select option:first-child {
+            color: gray;
+        }
+
+        select {
+            width: 270px;
+        }
+
+        p {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+        }
+
+        .danger {
+            background-color: #f44336;
+        }
+
+        .warning {
+            background-color: #ff9800;
+        }
+
+        .info {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+<h1>Add New Product</h1>
+<form method="POST" action="/food">
+    <label for="productName">Product Name:</label>
+    <input type="text" name="productName" id="productName" required><br><br>
+
+    <label for="caloriesPer100Gram">Calories per 100g:</label>
+    <input type="number" name="caloriesPer100Gram" id="caloriesPer100Gram" required><br><br>
+
+    <button type="submit">Add Product</button>
+</form>
+
+<br>
+<br>
+<br>
+<h1>Update Product</h1>
+<form method="POST" action="/food">
+    <input type="hidden" name="_method" value="PUT">
+    <label for="productName">Product Name:</label>
+    <input type="text" name="productName" required><br><br>
+
+    <label for="caloriesPer100Gram">Calories per 100g:</label>
+    <input type="number" name="caloriesPer100Gram" required><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+
+<br>
+<br>
+<br>
+<h1>Delete Product</h1>
+
+<form action="/food" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <label for="food-name">Введите название продукта, который нужно удалить:</label>
+    <input type="text" id="food-name" name="productName" required><br><br>
+    <input type="submit" value="Удалить продукт">
+</form>
+
+<br>
+<br>
+<br>
+<h1>Что сьел пользователь</h1>
+<form action="/calc/meals" method="post">
+    <label for="email">Email пользователя:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <select name="productName" id="productNameForCalories">
+        <option value="">--Выберите продукт--</option>
+        <option th:each="food : ${productsList}"
+                th:text="${food.productName}">
+        </option>
+    </select>
+    <br>
+    <label for="weight">Вес продукта, грамм:</label>
+    <input type="number" id="weight" name="weight" min="1" max="10000" required>
+    <br>
+    <input type="submit" value="Сохранить">
+</form>
+
+<br>
+<br>
+<br>
+
+<h1>Статистика по емейлу:</h1>
+<form method="GET" action="/calc/statistics">
+    <label for="email">User email:</label>
+    <input type="text" name="email" id="user-email" required><br><br>
+    <label for="start-date">Start date:</label>
+    <input type="date" name="start-date" id="start-date" required><br><br>
+    <label for="end-date">End date:</label>
+    <input type="date" name="end-date" id="end-date" required><br><br>
+    <button type="submit">Show statistics</button>
+</form>
+
+</body>
+</html>
