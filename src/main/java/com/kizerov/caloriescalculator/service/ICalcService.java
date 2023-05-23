@@ -10,4 +10,6 @@ public interface ICalcService {
 
     CaloriesSummaryDto showStatistics(String email, LocalDate startDate, LocalDate endDate);
 
+    CaloriesSummaryDto showStatistics(String email);
+
 }

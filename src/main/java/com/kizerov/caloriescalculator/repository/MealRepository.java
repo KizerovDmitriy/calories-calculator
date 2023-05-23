@@ -19,4 +19,7 @@ public interface MealRepository extends JpaRepository<Meal, Long> {
     Optional<List<Meal>> findAllByUserEmailAndDate(@Param("email") String email, @Param("startDate") LocalDate startDate,
                                                    @Param("endDate") LocalDate endDate);
 
+    @Query("SELECT e from Meal e WHERE e.user.email = :email")
+    Optional<List<Meal>> findAllByUserEmail(@Param("email") String email);
+
 }

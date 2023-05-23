@@ -1,46 +1,49 @@
 <!doctype html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Калькулятор</title>
+    <title>Статистика</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.3/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-
     <style>
-
-        .date-input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        table {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+            font-size: 14px;
+            border-collapse: collapse;
+            text-align: center;
         }
 
-        .container-calc {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap: 20px;
+        th, td:first-child {
+            background: #AFCDE7;
+            color: white;
+            padding: 10px 20px;
         }
 
-        .form-container {
+        th, td {
+            border-style: solid;
+            border-width: 0 1px 1px 0;
+            border-color: white;
+        }
+
+        td {
+            background: #D8E6F3;
+        }
+
+        th:first-child, td:first-child {
+            text-align: left;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .table-wrapper {
             display: flex;
-            flex-direction: column;
-        }
-
-        .form-outline {
-            width: 100%;
-        }
-
-
-        .form-outline button {
-            width: 100%;
+            justify-content: center;
         }
     </style>
-
 </head>
 <body>
 <div class="container">
@@ -55,7 +58,6 @@
                 </svg>
             </a>
         </div>
-
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 link-secondary">Головна</a></li>
             <li><a href="/calories" class="nav-link px-2">Калькулятор</a></li>
@@ -71,51 +73,58 @@
         </div>
     </header>
 </div>
-<div class="container">
-    <div class="container-calc">
-        <div>
-            <h1>Додати продукт до раціону</h1>
-            <div class="form-container">
-                <form action="/calories/meals" method="POST">
-                    <div class="form-outline">
-                        <label for="productNameForCalories">Виберіть продукт:</label>
-                        <select name="productName" id="productNameForCalories" class="form-control" required>
-                            <option value="">--Виберіть продукт--</option>
-                            <option th:each="food : ${productsList}" th:text="${food.getProductName}"></option>
-                        </select>
-                    </div>
-                    <div class="form-outline">
-                        <label for="weight">Вага у грамах:</label>
-                        <input type="number" id="weight" name="weight" min="1" max="10000" class="form-control"
-                               required>
-                    </div>
-                    <br>
-                    <div>
-                        <p>Не знайшли продукту у списку? <a href="/calories/add-new-foods">Додати новий продукт</a></p>
-                    </div>
-                    <div class="form-outline">
-                        <button type="submit" class="btn btn-primary">Зберегти</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div>
-            <h1>Статистика:</h1>
-            <div class="form-container">
-                <form method="GET" action="/calories/statistics">
-                    <div class="form-outline">
-                        <label for="start-date">З дати:</label>
-                        <input type="date" name="start-date" id="start-date" required class="date-input"><br><br>
-                        <label for="end-date">По дату:</label>
-                        <input type="date" name="end-date" id="end-date" required class="date-input"><br><br>
-                    </div>
-                    <div class="form-outline">
-                        <button type="submit" class="btn btn-primary">Показати статистику</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<h1 class="center">Калорії за продуктами для користувача: <span th:text="${userEmail}"></span></h1><br>
+<div class="period center">
+    У період з <span th:text="${adminStatistic.getStartDate()}"></span> по <span
+        th:text="${adminStatistic.getEndDate()}"></span><br><br>
+</div>
+<div class="table-wrapper">
+    <table>
+        <thead>
+        <tr>
+            <th>Назва продукту</th>
+            <th>Кількість, г</th>
+            <th>Калорії</th>
+            <th>Білки, г</th>
+            <th>Жири, г</th>
+            <th>Вуглеводи, г</th>
+            <th>Дата</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="meal : ${adminStatistic.getMeals()}">
+            <td th:text="${meal.food.getProductName()}"></td>
+            <td th:text="${meal.weight}"></td>
+            <td th:text="${meal.weight * meal.food.caloriesPer100Gram / 100}"></td>
+            <td th:text="${meal.weight * meal.food.protein / 100}"></td>
+            <td th:text="${meal.weight * meal.food.fat / 100}"></td>
+            <td th:text="${meal.weight * meal.food.carbohydrates / 100}"></td>
+            <td th:text="${meal.getDate()}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="3">Сума калорій:</td>
+            <td><span th:text="${adminStatistic.getTotalCalories()}"></span></td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Сума білків:</td>
+            <td><span th:text="${adminStatistic.getTotalProteins()}"></span></td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Сума жирів:</td>
+            <td><span th:text="${adminStatistic.getTotalFats()}"></span></td>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Сума вуглеводів:</td>
+            <td><span th:text="${adminStatistic.getTotalCarbohydrates()}"></span></td>
+            <td colspan="4"></td>
+        </tr>
+        </tfoot>
+    </table>
 </div>
 
 

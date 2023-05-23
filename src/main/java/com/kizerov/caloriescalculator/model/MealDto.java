@@ -12,9 +12,6 @@ public class MealDto {
 
     @NotNull
     @NotEmpty
-    private String email;
-    @NotNull
-    @NotEmpty
     private String productName;
     @NotNull
     @NotEmpty

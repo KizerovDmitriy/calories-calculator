@@ -8,13 +8,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "foods")
+@Table(name = "food")
 public class Food {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String productName;
     private int caloriesPer100Gram;
+    private int protein;
+    private int fat;
+    private int carbohydrates;
 
 }

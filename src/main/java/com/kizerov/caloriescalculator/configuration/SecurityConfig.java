@@ -1,6 +1,7 @@
 package com.kizerov.caloriescalculator.configuration;
 
-import com.kizerov.caloriescalculator.model.MyUserDetailsService;
+import com.kizerov.caloriescalculator.model.Role;
+import com.kizerov.caloriescalculator.service.impl.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final MyUserDetailsService userDetailsService;
+    private final MyUserDetailsService myUserDetailsService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -28,30 +29,34 @@ public class SecurityConfig {
                 .csrf()
                     .disable()
                 .authorizeHttpRequests()
-                    .requestMatchers("/","/registration").permitAll()
-                    .anyRequest().authenticated()
+                    .requestMatchers("/admin/**")
+                    .hasAuthority(Role.ADMIN.name())
+                    .requestMatchers("/","/registration")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
                     .and()
                 .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
                     .and()
                 .logout()
                     .logoutSuccessUrl("/")
                     .permitAll()
                     .and()
-                .authenticationProvider(authenticationProvider());
+                .authenticationProvider(authenticationProvider(myUserDetailsService));
 
         return http.build();
-
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(MyUserDetailsService myUserDetailsService) {
 
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(myUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
 
         return authProvider;
-
     }
 
 }

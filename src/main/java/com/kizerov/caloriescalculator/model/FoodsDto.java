@@ -14,5 +14,14 @@ public class FoodsDto {
     @NotNull
     @NotEmpty
     private Integer caloriesPer100Gram;
+    @NotNull
+    @NotEmpty
+    private int protein;
+    @NotNull
+    @NotEmpty
+    private int fat;
+    @NotNull
+    @NotEmpty
+    private int carbohydrates;
 
 }

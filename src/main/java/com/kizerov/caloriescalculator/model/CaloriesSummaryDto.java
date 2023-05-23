@@ -13,6 +13,9 @@ public class CaloriesSummaryDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private int totalCalories;
+    private int totalProteins;
+    private int totalFats;
+    private int totalCarbohydrates;
     private List<Meal> meals;
 
 }

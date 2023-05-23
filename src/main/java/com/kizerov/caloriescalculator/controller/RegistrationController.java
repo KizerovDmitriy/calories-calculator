@@ -2,7 +2,7 @@ package com.kizerov.caloriescalculator.controller;
 
 import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.model.UserDto;
-import com.kizerov.caloriescalculator.service.UserService;
+import com.kizerov.caloriescalculator.service.impl.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
