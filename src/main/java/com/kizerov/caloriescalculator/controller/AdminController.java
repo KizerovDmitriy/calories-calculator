@@ -90,7 +90,7 @@ public class AdminController {
         model.addAttribute("email", email);
         model.addAttribute("authenticated", authentication != null && authentication.isAuthenticated());
 
-        return "/admin-panel-statistics";
+        return "admin-panel-statistics";
     }
 
 }

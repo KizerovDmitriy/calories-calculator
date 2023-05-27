@@ -7,6 +7,7 @@ import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.repository.MealRepository;
 import com.kizerov.caloriescalculator.service.ICalcService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,15 +33,32 @@ public class CalculatorService implements ICalcService {
 
     @Override
     public CaloriesSummaryDto showStatistics(String email, LocalDate startDate, LocalDate endDate) {
+
         List<Meal> result = Collections.emptyList();
 
         if (email != null && !email.isEmpty()) {
+
             if (startDate != null && endDate != null) {
+
+                if (startDate.isAfter(LocalDate.now())) {
+
+                    throw new IllegalArgumentException("Початкова дата не може бути пізнішою за поточну");
+                }
+
+                if (endDate.isBefore(startDate)) {
+
+                    throw new IllegalArgumentException("Кінцева дата не може бути раніше початкової");
+                }
+
                 result = mealRepository.findAllByUserEmailAndDate(email, startDate, endDate)
-                        .orElse(Collections.emptyList());
+                        .orElseThrow(() -> new UsernameNotFoundException("Користувача з таким емейлом " + email +
+                                " або з такими датами: " + startDate + " - " + endDate +
+                                " не знайдено"));
             } else {
+
                 result = mealRepository.findAllByUserEmail(email)
-                        .orElse(Collections.emptyList());
+                        .orElseThrow(() -> new UsernameNotFoundException("Користувача з таким емейлом " + email +
+                                " не знайдено"));
             }
         }
 
@@ -81,6 +99,11 @@ public class CalculatorService implements ICalcService {
 
     @Override
     public void addTodayMeal(String userEmail, String productName, int weight) {
+
+        if (weight <= 0) {
+
+            throw new IllegalArgumentException("Вага не може бути відємною або дорівнювати нулю");
+        }
 
         User user = userService.findUserByEmail(userEmail);
         Food food = foodsService.findFoodsByName(productName);

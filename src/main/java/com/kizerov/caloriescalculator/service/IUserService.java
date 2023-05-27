@@ -2,6 +2,7 @@ package com.kizerov.caloriescalculator.service;
 
 import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.model.UserDto;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface IUserService {
     void deleteUser(Long id);
 
     void adminStatus(Long id);
+
+    void authWithHttpServletRequest(HttpServletRequest request, String userEmail, String password);
 
 }

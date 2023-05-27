@@ -3,6 +3,7 @@ package com.kizerov.caloriescalculator.controller;
 import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.model.UserDto;
 import com.kizerov.caloriescalculator.service.impl.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,15 +27,16 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result) {
+    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return "registration";
         }
 
         userService.registerNewUserAccount(userDto);
+        userService.authWithHttpServletRequest(request, userDto.getEmail(), userDto.getPassword());
 
-        return "redirect:/login";
+        return "redirect:/";
     }
 
 }

@@ -7,6 +7,8 @@ import com.kizerov.caloriescalculator.model.UserDto;
 import com.kizerov.caloriescalculator.repository.UserRepository;
 import com.kizerov.caloriescalculator.service.IUserService;
 import com.kizerov.caloriescalculator.service.mapper.UserMapper;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,12 +42,12 @@ public class UserService implements IUserService {
     public void deleteUser(Long id) {
 
         userRepository.deleteById(id);
-
     }
 
     @Transactional
     @Override
     public List<User> getAll() {
+
         Sort sort = Sort.by(Sort.Direction.ASC, "email");
         return userRepository.findAll(sort);
     }
@@ -55,6 +57,7 @@ public class UserService implements IUserService {
     public User registerNewUserAccount(UserDto userDto) throws RegistrationException {
 
         validation(userDto);
+        isPasswordValid(userDto.getPassword());
 
         User user = userMapper.toEntity(userDto);
 
@@ -69,22 +72,45 @@ public class UserService implements IUserService {
     public User findUserByEmail(String email) {
 
         return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("Користувача з таким емелом " + email + " не знайдено"));
+    }
+
+    @Override
+    public void authWithHttpServletRequest(HttpServletRequest request, String userEmail, String password) {
+        try {
+            request.login(userEmail, password);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
     }
 
     private void validation(UserDto userDto) {
 
         if (emailExists(userDto.getEmail()))
-            throw new RegistrationException("Пользователь с таким " + userDto.getEmail() + " уже зарегистрирован");
+            throw new RegistrationException("Користувач з таким емейлом " + userDto.getEmail() + " вже зараєстрований");
 
         if (!userDto.getEmail().contains("@"))
-            throw new RegistrationException("Incorrect email address");
+            throw new RegistrationException("Не вірний формат емейлу");
 
     }
 
     private boolean emailExists(String email) {
 
         return userRepository.findUserByEmail(email).isPresent();
+    }
+
+    private void isPasswordValid(String password) {
+
+        if (password.length() < 6) {
+
+            throw new RegistrationException("Пароль повинен бути не меньше 6 символів.");
+        }
+
+        if (!password.matches(".*\\d.*")) {
+
+            throw new RegistrationException("В паролі повинна бути хоча б одна цифра.");
+        }
+
     }
 
 }

@@ -20,7 +20,9 @@ public class FoodsController {
 
     @GetMapping()
     public String showUpdateForm(Model model) {
+
         model.addAttribute("foodsDto", new FoodsDto());
+
         return "calc";
     }
 

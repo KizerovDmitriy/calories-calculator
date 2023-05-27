@@ -173,7 +173,7 @@
 <body>
 <div id="registration-form-wrap">
     <h2>Реєстрація</h2>
-    <form th:action="@{/registration}" method="post" id="registration-form">
+    <form th:action="@{/registration}" method="post" id="registration-form" onsubmit="return validateForm()">
         <p>
             <input type="email" id="email" name="email" placeholder="Email" required><i class="validation"><span></span><span></span></i>
         </p>
@@ -193,5 +193,30 @@
         <p>Вже є обліковий запис? <a href="/login">Форма входу</a></p>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+
+        if (password.length < 6) {
+            alert("Пароль повиннен бути не менше 6 символів.");
+            return false;
+        }
+
+        if (!/\d/.test(password)) {
+            alert("Пароль має містити хоча б одну цифру.");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Паролі не співпадають.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
 </body>
 </html>

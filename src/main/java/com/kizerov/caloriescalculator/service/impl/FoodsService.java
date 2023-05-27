@@ -7,6 +7,7 @@ import com.kizerov.caloriescalculator.service.IFoodsService;
 import com.kizerov.caloriescalculator.service.mapper.MealMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +24,26 @@ public class FoodsService implements IFoodsService {
     @Override
     public Food addNewFoods(FoodsDto foodsDto) {
 
+        String foodName = foodsDto.getProductName();
+
+        if (!foodName.matches("[a-zA-Zа-яА-ЯёЁ]+")) {
+
+            throw new IllegalArgumentException("В продукті не повинно бути чисел, чи будь-яких спец символів.");
+        }
+
+        if (foodName.length() < 3) {
+
+            throw new IllegalArgumentException("Довжина слова повинна бути не менше трьох букв.");
+        }
+
+        if (foodsRepository.findProductByProductName(foodName).isPresent()) {
+
+            throw new DuplicateKeyException(foodName + " вже є в базі даних");
+        }
+
         return foodsRepository.save(mealMapper.toEntity(foodsDto));
     }
+
 
     @Override
     public void updateFoods(String name, FoodsDto foodsDto) {
@@ -56,7 +75,7 @@ public class FoodsService implements IFoodsService {
     }
 
     @Override
-    public Food findFoodsByName(String productName){
+    public Food findFoodsByName(String productName) {
 
         return foodsRepository.findProductByProductName(productName).orElseThrow(() -> new EntityNotFoundException("Foods not found"));
     }
