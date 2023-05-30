@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #ff0000;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333333;
+            font-size: 18px;
+        }
+
+        a {
+            color: #3366cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Error</h1>
+<p th:text="${errorMessage}"></p>
+<p><a href="javascript:history.back()">Повернутися на попередню сторінку</a></p>
+</body>
+</html>
