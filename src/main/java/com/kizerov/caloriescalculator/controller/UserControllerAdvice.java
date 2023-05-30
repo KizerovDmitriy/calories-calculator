@@ -1,6 +1,7 @@
 package com.kizerov.caloriescalculator.controller;
 
 import com.kizerov.caloriescalculator.exception.RegistrationException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserControllerAdvice {
 
     @ExceptionHandler({DuplicateKeyException.class, IllegalArgumentException.class,
-            RegistrationException.class, UsernameNotFoundException.class})
+            RegistrationException.class, UsernameNotFoundException.class, EntityNotFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleDuplicateAndIllegalArgumentAndRegistrationException(Exception ex) {
 

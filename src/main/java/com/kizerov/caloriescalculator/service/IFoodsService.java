@@ -11,10 +11,14 @@ public interface IFoodsService {
 
     void updateFoods(String name, FoodsDto foodsDto);
 
+    void updateFoods(Food food);
+
     void deleteFoods(String productName);
 
     List<Food> getAllFoods();
 
     Food findFoodsByName(String productName);
+
+    Food findFoodById(Long id);
 
 }

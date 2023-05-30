@@ -26,9 +26,14 @@ public class FoodsService implements IFoodsService {
 
         String foodName = foodsDto.getProductName();
 
-        if (!foodName.matches("[a-zA-Zа-яА-ЯёЁ]+")) {
+        if (Character.isDigit(foodName.charAt(0)) || !Character.isLetter(foodName.charAt(0))) {
 
-            throw new IllegalArgumentException("В продукті не повинно бути чисел, чи будь-яких спец символів.");
+            throw new IllegalArgumentException("Назва продукту містить недопустимі символи.");
+        }
+
+        if (foodName.matches("^[\\d\\s]+$")) {
+
+            throw new IllegalArgumentException("Назва продукту не може кладатись тільки з цифр.");
         }
 
         if (foodName.length() < 3) {
@@ -39,6 +44,12 @@ public class FoodsService implements IFoodsService {
         if (foodsRepository.findProductByProductName(foodName).isPresent()) {
 
             throw new DuplicateKeyException(foodName + " вже є в базі даних");
+        }
+
+        if (foodsDto.getCaloriesPer100Gram() <= 0 || foodsDto.getProtein() < 0
+                || foodsDto.getFat() < 0 || foodsDto.getCarbohydrates() < 0) {
+
+            throw new IllegalArgumentException("Значення калорій або БЖУ не може бути від'ємним або дорівнювати нулю.");
         }
 
         return foodsRepository.save(mealMapper.toEntity(foodsDto));
@@ -57,7 +68,12 @@ public class FoodsService implements IFoodsService {
         food.setFat(foodsDto.getFat());
 
         foodsRepository.save(food);
+    }
 
+    @Override
+    public void updateFoods(Food food) {
+
+        foodsRepository.save(food);
     }
 
 
@@ -65,7 +81,6 @@ public class FoodsService implements IFoodsService {
     public void deleteFoods(String productName) {
 
         foodsRepository.deleteProductByProductName(productName);
-
     }
 
     @Override
@@ -78,6 +93,13 @@ public class FoodsService implements IFoodsService {
     public Food findFoodsByName(String productName) {
 
         return foodsRepository.findProductByProductName(productName).orElseThrow(() -> new EntityNotFoundException("Foods not found"));
+    }
+
+    @Override
+    public Food findFoodById(Long id) {
+
+        return foodsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Продукт за таким ID - " + id + " не знайденно"));
     }
 
 }
