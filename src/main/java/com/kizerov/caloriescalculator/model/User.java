@@ -20,4 +20,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
+
+    private int age;
+    private int height;
+    private int weight;
+
 }

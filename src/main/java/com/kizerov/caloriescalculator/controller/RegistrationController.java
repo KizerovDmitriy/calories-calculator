@@ -27,7 +27,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result, HttpServletRequest request) {
+    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto,
+                                      BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return "registration";

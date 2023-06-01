@@ -168,6 +168,15 @@
             padding: 10px 0;
             border-radius: 0 0 4px 4px;
         }
+
+        .gender-options {
+            display: flex;
+            align-items: center;
+        }
+
+        .gender-options input[type="radio"] {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -175,15 +184,28 @@
     <h2>Реєстрація</h2>
     <form th:action="@{/registration}" method="post" id="registration-form" onsubmit="return validateForm()">
         <p>
-            <input type="email" id="email" name="email" placeholder="Email" required><i class="validation"><span></span><span></span></i>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <i class="validation"><span></span><span></span></i>
         </p>
         <p>
-            <input type="password" id="password" name="password" placeholder="Password" required><i
-                class="validation"><span></span><span></span></i>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <i class="validation"><span></span><span></span></i>
         </p>
         <p>
-            <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm Password" required><i
-                class="validation"><span></span><span></span></i>
+            <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+            <i class="validation"><span></span><span></span></i>
+        </p>
+        <p>
+        <div class="gender-selection-form" style="font-size: 22px;">
+            <h4>Оберіть стать:</h4>
+            <div class="gender-options">
+                <input type="radio" id="male" name="sex" value="MALE" style="transform: scale(0.4);" required>
+                <label for="male" style="margin-right: 10px;">Чоловіча</label>
+
+                <input type="radio" id="female" name="sex" value="FEMALE" style="transform: scale(0.4);" required>
+                <label for="female" style="margin-right: 10px;">Жіноча</label>
+            </div>
+        </div>
         </p>
         <p>
             <input type="submit" id="register" value="Зареєструватися">
@@ -193,6 +215,7 @@
         <p>Вже є обліковий запис? <a href="/login">Форма входу</a></p>
     </div>
 </div>
+
 
 <script>
     function validateForm() {

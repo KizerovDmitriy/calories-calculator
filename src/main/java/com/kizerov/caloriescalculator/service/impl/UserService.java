@@ -2,11 +2,13 @@ package com.kizerov.caloriescalculator.service.impl;
 
 import com.kizerov.caloriescalculator.exception.RegistrationException;
 import com.kizerov.caloriescalculator.model.Role;
+import com.kizerov.caloriescalculator.model.Sex;
 import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.model.UserDto;
 import com.kizerov.caloriescalculator.repository.UserRepository;
 import com.kizerov.caloriescalculator.service.IUserService;
 import com.kizerov.caloriescalculator.service.mapper.UserMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,22 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    @Override
+    public void updateUserFields(Long id, Sex sex, int age, int height, int weight) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Користувача з таким айди: " + id + " не знайденно"));
+
+        user.setSex(sex);
+        user.setAge(age);
+        user.setHeight(height);
+        user.setWeight(weight);
+
+        userRepository.save(user);
+    }
+
 
     @Transactional
     @Override
@@ -54,7 +72,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public User registerNewUserAccount(UserDto userDto) throws RegistrationException {
+    public void registerNewUserAccount(UserDto userDto) throws RegistrationException {
 
         validation(userDto);
         isPasswordValid(userDto.getPassword());
@@ -64,7 +82,7 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
 
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -111,6 +129,15 @@ public class UserService implements IUserService {
             throw new RegistrationException("В паролі повинна бути хоча б одна цифра.");
         }
 
+    }
+
+    @Override
+    public boolean isProfileIncomplete(String email) {
+
+        User user = userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Користувача з таким емейлом: " + email + " не знайденно."));
+
+        return user.getAge() <= 0 || user.getHeight() <= 0 || user.getWeight() <= 0;
     }
 
 }

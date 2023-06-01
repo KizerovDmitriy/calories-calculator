@@ -1,6 +1,7 @@
 package com.kizerov.caloriescalculator.controller;
 
 import com.kizerov.caloriescalculator.model.MealDto;
+import com.kizerov.caloriescalculator.service.NutriCalc;
 import com.kizerov.caloriescalculator.service.impl.CalculatorService;
 import com.kizerov.caloriescalculator.service.impl.FoodsService;
 import com.kizerov.caloriescalculator.service.impl.UserService;
@@ -24,6 +25,7 @@ public class CalculatorController {
     private final FoodsService productService;
     private final CalculatorService calculatorService;
     private final UserService userService;
+    private final NutriCalc dailyGoalCalories;
 
     @GetMapping("/statistics")
     public String getCaloriesIntakeSummary(Model model,
@@ -51,19 +53,27 @@ public class CalculatorController {
     }
 
     @GetMapping()
-    public String showCalcPage(Model model, Authentication authentication) {
+    public String showCalcPage(Model model, Authentication authentication, @AuthenticationPrincipal UserDetails userDetails) {
 
         model.addAttribute("productsList", productService.getAllFoods());
         model.addAttribute("authenticated", authentication != null && authentication.isAuthenticated());
+
 
         if (authentication != null && authentication.getAuthorities()
                 .stream()
                 .anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
 
             return "calcadmin";
+
+        } else {
+
+            model.addAttribute("consumed", calculatorService.showStatistics(userDetails.getUsername(),LocalDate.now(),LocalDate.now()));
+            model.addAttribute("dailyGoals", dailyGoalCalories.dailyGoalCalories(userDetails.getUsername()));
+            model.addAttribute("isProfileIncomplete", userService.isProfileIncomplete(userDetails.getUsername()));
+
+            return "calc";
         }
 
-        return "calc";
     }
 
     @GetMapping("/add-new-foods")

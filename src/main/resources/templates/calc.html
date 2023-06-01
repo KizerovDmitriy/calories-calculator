@@ -39,6 +39,41 @@
         .form-outline button {
             width: 100%;
         }
+
+        .status-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            height: 30px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .status-bar-progress {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .status-bar-exceed {
+            background-color: #ff0000;
+        }
+
+        .status-bar-text {
+            line-height: 30px;
+            text-align: center;
+            color: #000;
+            font-weight: bold;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 
 </head>
@@ -66,11 +101,73 @@
                 <a th:href="@{/login}" class="btn btn-outline-primary me-2">Вхід до аккаунту</a>
             </div>
             <div th:if="${authenticated}">
+                <a th:href="@{/account-page}" class="btn btn-outline-primary me-2">Особистий кабінет</a>
                 <a th:href="@{/logout}" class="btn btn-outline-primary me-2">Вихід</a>
             </div>
         </div>
     </header>
 </div>
+
+<div class="container">
+    <th:block th:if="${isProfileIncomplete}">
+        <h3 style="text-align: center; color: red;">Для коректної роботи та відображення статус барів, заповніть будь
+            ласка свій
+            профіль! <a href="/account-page">Особистий кабінет</a> </h3>
+    </th:block>
+    <th:block th:unless="${isProfileIncomplete}">
+
+        <div class="status-bar">
+            <div class="status-bar-progress"
+                 th:classappend="${consumed.totalCalories > dailyGoals.calories} ? 'status-bar-exceed' : ''"
+                 th:style="'width:' + (${consumed.totalCalories} / ${dailyGoals.calories} * 100) + '%;
+                    max-width: 100%;'"></div>
+            <div class="status-bar-text"
+                 th:text="${consumed.totalCalories > dailyGoals.calories} ?
+   ('Перевищенно денну норму на ' + (${consumed.totalCalories} - ${dailyGoals.calories}) +
+   ' кал. (' + (((${consumed.totalCalories} - ${dailyGoals.calories}) / ${dailyGoals.calories}) * 100) + '%)')
+   : ('Спожито: ' + ${consumed.totalCalories} + ' кал. (' + (${consumed.totalCalories} / ${dailyGoals.calories} * 100) + '%) від денної норми')"></div>
+        </div>
+
+
+        <div class="status-bar">
+            <div class="status-bar-progress"
+                 th:classappend="${consumed.totalProteins > dailyGoals.proteins} ? 'status-bar-exceed' : ''"
+                 th:style="'width:' + (${consumed.totalProteins} / ${dailyGoals.proteins} * 100) + '%;
+                    max-width: 100%;'"></div>
+            <div class="status-bar-text"
+                 th:text="${consumed.totalProteins > dailyGoals.proteins} ?
+       ('Перевищенно денну норму білків на ' + (${consumed.totalProteins} - ${dailyGoals.proteins}) +
+       ' г (' + (((${consumed.totalProteins} - ${dailyGoals.proteins}) / ${dailyGoals.proteins}) * 100) + '%)')
+       : ('Спожито білків: ' + ${consumed.totalProteins} + ' г (' + (${consumed.totalProteins} / ${dailyGoals.proteins} * 100) + '%) від денної норми')"></div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-bar-progress"
+                 th:classappend="${consumed.totalFats > dailyGoals.fats} ? 'status-bar-exceed' : ''"
+                 th:style="'width:' + (${consumed.totalFats} / ${dailyGoals.fats} * 100) + '%;
+                    max-width: 100%;'"></div>
+            <div class="status-bar-text"
+                 th:text="${consumed.totalFats > dailyGoals.fats} ?
+       ('Перевищенно денну норму жирів на ' + (${consumed.totalFats} - ${dailyGoals.fats}) +
+       ' г (' + (((${consumed.totalFats} - ${dailyGoals.fats}) / ${dailyGoals.fats}) * 100) + '%)')
+       : ('Спожито жирів: ' + ${consumed.totalFats} + ' г (' + (${consumed.totalFats} / ${dailyGoals.fats} * 100) + '%) від денної норми')"></div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-bar-progress"
+                 th:classappend="${consumed.totalCarbohydrates > dailyGoals.carbohydrates} ? 'status-bar-exceed' : ''"
+                 th:style="'width:' + (${consumed.totalCarbohydrates} / ${dailyGoals.carbohydrates} * 100) + '%;
+                    max-width: 100%;'"></div>
+            <div class="status-bar-text"
+                 th:text="${consumed.totalCarbohydrates > dailyGoals.carbohydrates} ?
+       ('Перевищенно денну норму вуглеводів на ' + (${consumed.totalCarbohydrates} - ${dailyGoals.carbohydrates}) +
+       ' г (' + (((${consumed.totalCarbohydrates} - ${dailyGoals.carbohydrates}) / ${dailyGoals.carbohydrates}) * 100) + '%)')
+       : ('Спожито вуглеводів: ' + ${consumed.totalCarbohydrates} + ' г (' + (${consumed.totalCarbohydrates} / ${dailyGoals.carbohydrates} * 100) + '%) від денної норми')"></div>
+        </div>
+
+    </th:block>
+</div>
+
 <div class="container">
     <div class="container-calc">
         <div>

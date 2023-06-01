@@ -68,6 +68,7 @@
                 <a th:href="@{/login}" class="btn btn-outline-primary me-2">Вхід до аккаунту</a>
             </div>
             <div th:if="${authenticated}">
+                <a th:href="@{/account-page}" class="btn btn-outline-primary me-2">Особистий кабінет</a>
                 <a th:href="@{/logout}" class="btn btn-outline-primary me-2">Вихід</a>
             </div>
         </div>

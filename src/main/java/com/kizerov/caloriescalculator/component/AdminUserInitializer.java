@@ -1,6 +1,7 @@
 package com.kizerov.caloriescalculator.component;
 
 import com.kizerov.caloriescalculator.model.Role;
+import com.kizerov.caloriescalculator.model.Sex;
 import com.kizerov.caloriescalculator.model.User;
 import com.kizerov.caloriescalculator.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class AdminUserInitializer implements ApplicationRunner {
             adminUser.setEmail("kizerov.dmitriy@gmail.com");
             adminUser.setPassword(passwordEncoder.encode("atybrclbvf"));
             adminUser.setRole(Role.ADMIN);
+            adminUser.setSex(Sex.MALE);
 
             userRepository.save(adminUser);
 

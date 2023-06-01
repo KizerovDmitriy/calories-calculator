@@ -46,6 +46,7 @@
                 <a th:href="@{/login}" class="btn btn-outline-primary me-2">Вхід до аккаунту</a>
             </div>
             <div th:if="${authenticated}">
+                <a th:href="@{/account-page}" class="btn btn-outline-primary me-2">Особистий кабінет</a>
                 <a th:href="@{/logout}" class="btn btn-outline-primary me-2">Вихід</a>
             </div>
         </div>
@@ -62,21 +63,21 @@
                 </div>
                 <div class="form-outline">
                     <label class="form-label" for="caloriesPer100Gram">Калорій на 100 грам:</label>
-                    <input type="number" name="caloriesPer100Gram" id="caloriesPer100Gram" min="1" max="10000"
+                    <input type="number" name="caloriesPer100Gram" id="caloriesPer100Gram" min="1" max="1500"
                            class="form-control"
                            required>
                 </div>
                 <div class="form-outline">
                     <label class="form-label" for="protein">Білки на 100 грам:</label>
-                    <input type="number" name="protein" id="protein" min="0" max="10000" class="form-control" required>
+                    <input type="number" name="protein" id="protein" min="0" max="100" class="form-control" required>
                 </div>
                 <div class="form-outline">
                     <label class="form-label" for="fat">Жири на 100 грам:</label>
-                    <input type="number" name="fat" id="fat" min="0" max="10000" class="form-control" required>
+                    <input type="number" name="fat" id="fat" min="0" max="100" class="form-control" required>
                 </div>
                 <div class="form-outline">
                     <label class="form-label" for="carbohydrates">Вуглеводи на 100 грам:</label>
-                    <input type="number" name="carbohydrates" id="carbohydrates" min="0" max="10000"
+                    <input type="number" name="carbohydrates" id="carbohydrates" min="0" max="100"
                            class="form-control" required>
                 </div>
                 <br>

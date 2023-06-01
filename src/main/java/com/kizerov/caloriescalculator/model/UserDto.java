@@ -18,4 +18,8 @@ public class UserDto {
     @NotEmpty
     private String email;
 
+    @NotNull
+    @NotEmpty
+    private Sex sex;
+
 }
