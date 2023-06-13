@@ -1,7 +1,8 @@
 # Calorie Calculator
 
 
-The **Calorie Calculator** project is designed to help individuals monitor and control their daily calorie intake, as well as track their diet over time. It allows users to easily manage their calorie consumption and offers the capability to add new food items to the database if they are not already available. The project also includes an administrator role, which enables editing, modifying, and deleting products and users that do not meet certain criteria. Additionally, the project provides user registration and a personal dashboard, where users can input their age and physiological characteristics for more accurate calculation of calorie needs and macronutrient targets.
+The [Calorie Calculator](http://calories-calculator.eu-north-1.elasticbeanstalk.com/)
+project is designed to help individuals monitor and control their daily calorie intake, as well as track their diet over time. It allows users to easily manage their calorie consumption and offers the capability to add new food items to the database if they are not already available. The project also includes an administrator role, which enables editing, modifying, and deleting products and users that do not meet certain criteria. Additionally, the project provides user registration and a personal dashboard, where users can input their age and physiological characteristics for more accurate calculation of calorie needs and macronutrient targets.
 
 ## Features
 
