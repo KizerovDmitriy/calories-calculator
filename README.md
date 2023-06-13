@@ -11,6 +11,8 @@ The **Calorie Calculator** project is designed to help individuals monitor and c
 - Administrator role for managing products and users
 - Integration with Spring Security for authentication and authorization
 - Utilization of Thymeleaf templating engine and Bootstrap for frontend development
+- Use of **MapStruct** for mapping between different data structures and objects
+- Utilization of **Lombok** for reducing boilerplate code and enhancing productivity
 
 ## Technologies Used
 
@@ -22,7 +24,8 @@ This project is built using the following technologies and frameworks:
 - **Spring Security**: Handles authentication, authorization, and session management for the application.
 - **Thymeleaf**: A server-side Java template engine for rendering dynamic HTML pages.
 - **Bootstrap**: A popular CSS framework for creating responsive and visually appealing web pages.
-- *(Add any other relevant technologies or libraries used)*
+- **MapStruct**: A code generation library for mapping between Java bean types.
+- **Lombok**: A Java library that helps reduce boilerplate code and enhances developer productivity.
 
 ## Installation
 
